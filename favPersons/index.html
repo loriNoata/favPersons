@@ -1,0 +1,194 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add New Tiles</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://fastcdn.org/Underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" > </script>   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js" > </script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"> </script> 
+  <script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATzbcmddl6rBk_t_PA3jaoEHhIrTdT_4s&callback=mainApp.initMap"></script>
+  <style>
+      #myMap {
+        width: 100%;
+        height: 400px;
+        border: 2px solid pink;
+      }
+    </style>
+
+  <script type="text/x-mustache-template" id="boxTemplateId">
+	{{#.}}
+		<div class="containerWrraper" data-container-box="{{ email }}">
+		  <article class="containerBody" contenteditable="false" >
+			<img class="profileImg" src="{{picture.large}}" />   
+			<h1>  {{name.first}} {{name.last }} </h1>
+			<ul> 
+				<li> Phone : {{ phone  }}</li> 
+				<li> Email : {{ email }} </li> 
+				<li> City  : {{ location.city }} </li> 
+			</ul> 
+		  </article>
+
+		  <footer>
+			<div class="box love" onclick="mainApp.displayFavList(this)"> <span class="glyphicon glyphicon-heart-empty"></span> Add to favorite</div>
+			<div class="box edit" data-toggle="modal" data-target="#modalID{{name.first}}{{name.last}}"> <span class="glyphicon glyphicon-star-empty"></span> See details </div> <!--  onclick="mainApp.seeDetails('{{name.first}}', '{{name.last }}')" -->
+			<div class="box save noDisplay" onclick="saveBox(this)"> <span class="glyphicon glyphicon-star-empty"></span> Save </div>
+			<div class="box del" onclick="mainApp.deleteBox('{{ email }}')"> <span class="glyphicon glyphicon-remove"></span> Delete </div>
+		  </footer>
+		</div>
+		<div class="modal fade" id="modalID{{name.first}}{{name.last}}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Details </h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body"> 
+					
+					<div id="myMap">
+					
+					<div class="mapouter">
+						<div class="gmap_canvas">
+							<iframe width="865" height="395" id="gmap_canvas" 
+								src="https://maps.google.com/maps?q={{location.city}}&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+								frameborder="0" 
+								scrolling="no" 
+								marginheight="0" 
+								marginwidth="0">
+							</iframe>
+						</div>
+						
+						<style>
+						.mapouter{text-align:center; height:400px; width:865px;}
+						.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:865px;}
+						</style>
+					</div>
+					
+					</div> 
+					
+					<p style=" text-align: center;">  
+						<img src="{{picture.large }}" style="width:200px; border-radius: 50%; text-align: center;"/> 
+						<h1 style=" text-align: center;">{{name.first}}, {{ dob.age  }} - {{nat}}    </h1>
+					</p>
+					 <span class="glyphicon glyphicon-heart-empty"> {{gender}} </span>
+					  <p> Name: {{name.first}} {{name.last }} </p>
+					  <p> {{ phone  }} </p>
+					  <p> {{ email }} </p>
+					  <p> Address: {{location.street}}, {{location.city}}, {{location.state}}, {{location.postcode}}, {{nat}} </p>
+					  <p> Email: {{email }} </p>
+					  <p> Age: {{ dob.age  }} </p>
+					  <p> Phone {{ phone }} </p>
+					  <p> Cell {{ cell }}  </p>
+					  
+					  <p>   </p>
+					   
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<!--button type="button" class="btn btn-primary">Save changes</button-->
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	{{/.}}
+	
+	
+		<article class="loadMore" > 
+			<div onclick="mainApp.loadMoreData()">
+			  <h1> Load </h1> 
+			  <h2> more data </h3>  
+			</div> 
+		</article>
+  </script>
+  
+   
+  
+  <script type="text/x-mustache-template" id="favListTemplateId"> 
+	{{#.}}
+		<ul>
+			<li> <img class="profileImg" src="{{picture.thumbnail}}" />   {{name.first}} {{name.last }}  </li>
+		</ul> 
+	 {{/.}}
+	 
+	 
+  </script> 
+   
+
+</head>
+<body>
+ 
+  <header class="headerContainer"> 
+  
+	<ul class="navBar">
+		<li> 
+		 
+		  <form name="selectGenderForm">
+		  Select gender:
+			<select id="selectGender" onchange="mainApp.selectOptionGender()">
+				<option value="all" selected> all </option>
+				<option value="female">       women</option>
+				<option value="male">         men</option>
+			</select>
+		  </form>
+		</li>
+		<li> 
+			 <input type="text"  id="inputSearch" onfocusout="mainApp.searchForUsers()">  
+		</li>
+		<li> 
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalChart" onclick="mainApp.openChart()"> Open the graphs </button>
+		</li>
+		<li> 
+			<nav class="fav-Container" onclick="mainApp.toggleFavContainer()">
+				<input type="text" val="0" class="hidded favCounter" >
+				<span class="favorites">  0 </span> 
+				<span class="glyphicon glyphicon-heart"> </span>
+				<article class="favList"> 
+					<div class="favListContent hidded">  </div>
+				</article> 
+			</nav>
+		</li>
+	</ul>
+  </header>
+   
+
+  <div id="bodyId" class="bodyWrapper"> </div> 
+  
+		<div class="modal fade" id="modalChart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Details </h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<canvas id="myChart"></canvas>
+						 
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+  
+
+
+
+  
+  <script src="main.js"></script>
+
+</body>
+</html>
