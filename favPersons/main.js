@@ -1,7 +1,7 @@
 let mainApp=(function(){
 	let toDoList = "https://jsonplaceholder.typicode.com/todos/" ;
 var numberOfLoads = 10; 
-var url = 'https://randomuser.me/api/?results='; //   Get 10 random users
+const url = 'https://randomuser.me/api/?results='; //   Get 10 random users
 var boxTemplateId = $("#boxTemplateId").html();
 var favListTemplateId = $("#favListTemplateId").html();
 var modalTemplateId = $("#modalTemplateId").html();
@@ -33,6 +33,7 @@ function selectOptionGender() {
 	if (isActiveSearch) {
 		newUsers = searchForUsers(gender);
 		displayUsers(newUsers); 
+
 	} else {
 		displayUsers(gender); 
 	}
