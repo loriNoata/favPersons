@@ -9,7 +9,6 @@ ul li {
 	width: 100%;
     margin: 0;
     padding: 0;
-   
  }
 
 header.headerContainer{
@@ -31,9 +30,8 @@ footer.footer-container{
 	bottom: 0; 
 	text-align: center; 
 	padding: 10px; 
-
-	
 }
+
 footer.footer-container div{
 	line-height:30px; 
 	font-size: 18px; 
@@ -42,8 +40,9 @@ footer.footer-container div{
 .hidded {
 	display: none; 
 }
+
 img.profileImg {
-    margin: 10px auto;
+  margin: 10px auto;
 	width:auto;
 	border-radius: 50%; 
 }
@@ -52,7 +51,6 @@ img.profileImg {
 	padding:5% 3% 3%; 
 	width:100%;
 	background-color: #f4f4f4; 
-	
 }
  
  
@@ -65,7 +63,6 @@ img.profileImg {
     background-color: #f4f4f4;
     padding: 10px;
     text-align: center;
-	 
 }
 
 
@@ -250,9 +247,8 @@ ul.navBar{
 	width: calc(100% / 4 - 4 * 10px);
 	padding:10px;
 	margin:0 10px; 
-	vartical-align: top; 
+	vertical-align: top; 
 }
-
 
 .modal.in .modal-dialog {
 	width: 900px;
