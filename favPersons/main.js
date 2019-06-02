@@ -12,9 +12,6 @@ var deletedUsers = [];
 var favList=[]; 
 var isActiveSearch = false; 
  
-
-
-//let boolSelectedGender =  false;
 loadData(); 
  
 
@@ -44,7 +41,6 @@ function selectOptionGender() {
 	}
 	
 }
-
 
 
 function displayFavList(elm) {
