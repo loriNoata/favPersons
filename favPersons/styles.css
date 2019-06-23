@@ -7,8 +7,8 @@ ul li {
  
  .favListContent ul li {
 	width: 100%;
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
  }
 
 header.headerContainer{
@@ -17,7 +17,7 @@ header.headerContainer{
 	box-shadow: 0 0 3px black;
 	background-color: rgba(71, 74, 96, 0.5); 
 	top: 0;
-	position:fixed; 
+	position: fixed; 
 	z-index: 5;
 }
 
@@ -33,7 +33,7 @@ footer.footer-container{
 }
 
 footer.footer-container div{
-	line-height:30px; 
+	line-height: 30px; 
 	font-size: 18px; 
 }
 
@@ -43,13 +43,13 @@ footer.footer-container div{
 
 img.profileImg {
   margin: 10px auto;
-	width:auto;
+	width: auto;
 	border-radius: 50%; 
 }
 
 .bodyWrapper {
-	padding:5% 3% 3%; 
-	width:100%;
+	padding: 5% 3% 3%; 
+	width: 100%;
 	background-color: #f4f4f4; 
 }
  
@@ -82,7 +82,7 @@ img.profileImg {
 	min-height: 200px;
 	width: 300%; 
 	box-shadow: 0px 0px 5px grey;
-    z-index: -1;
+  z-index: -1;
 	padding:5px;
 	height: 500px;  
 }
@@ -110,19 +110,16 @@ span.favorites{
 }
 
 
-
 .containerBody {
   padding: 15px;
   text-align: center; 
 }
-
 
 .containerBody ul {
 	list-style-type: none;
 	margin: 20px 0 0 0;
 	padding:0; 
 }
-
  
 .containerBody h1 {
   margin: 0;
@@ -164,7 +161,6 @@ footer .box {
   display: block;
   float: left;
   line-height: 45px;
-
 }
 
 .favListContent {

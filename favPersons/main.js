@@ -38,7 +38,6 @@ function selectOptionGender() {
 	} else {
 		displayUsers(gender); 
 	}
-	
 }
 
 
