@@ -1,2 +1,2 @@
 let experiment = false; 
-const nothing = 'nothing'; 
+const nothing = 'something on a new branch'; 
