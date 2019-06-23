@@ -5,12 +5,11 @@ const url = 'https://randomuser.me/api/?results='; //   Get 10 random users
 var boxTemplateId = $("#boxTemplateId").html();
 var favListTemplateId = $("#favListTemplateId").html();
 var modalTemplateId = $("#modalTemplateId").html();
-var usersAll;  
-var usersFemale;
-var usersMale;
+var usersAll =[];  
+var usersFemale =[];
+var usersMale = [];
 var favList=[]; 
 var isActiveSearch = false; 
-//let boolSelectedGender =  false;
 loadData(); 
  
 
@@ -22,14 +21,16 @@ function loadData() {
  
 function loadMoreData() {
 	numberOfLoads +=  10; 
+	(isActiveSearch) ? console.log("is active search") : console.log("not active search") ;
 	loadData(); 
 }
 
 function selectOptionGender() {
 	let selector, gender, newUsers =[]; 
+ 
 	selector = $("#selectGender").val();
 	gender = setGender(selector);
-	//loadSelected(selector);
+ 	//loadSelected(selector);
 	if (isActiveSearch) {
 		newUsers = searchForUsers(gender);
 		displayUsers(newUsers); 
@@ -55,11 +56,11 @@ function displayFavList(elm) {
 
 function setGender(selector) { 
 	if (selector === "male" ) {
-		return usersMale;  
+ 		return usersMale;  
 	} else if (selector === "female" )  {
 		return usersFemale ;
 	} else {
-		return usersAll;
+ 		return usersAll;
 	}
 }
 
@@ -97,15 +98,39 @@ function addToFavList(userArr, elm) {
 }
 
  function deleteBox(eMail) {
-	usersAll = usersAll.filter(hasSameEmail);
-	function hasSameEmail(users) {
-		if (users.email !== eMail ) {
+	let selector = $("#selectGender").val();
+	usersFemale = usersFemale.filter(hasDifferentEmail);
+	usersMale = usersMale.filter(hasDifferentEmail);
+	usersAll = usersAll.filter(hasDifferentEmail);
+
+	function hasDifferentEmail(user) {
+		if (user.email !== eMail ) {
 			return true; 
-		}
+		} 
 	}
+	
 	numberOfLoads--; 
-	displayUsers(usersAll);
-	return usersAll; 
+ 	if (isActiveSearch) {
+		usersFound=  searchForUsers(); 
+ 	} else {
+		if (selector == "female") {
+		
+			displayUsers(usersFemale);
+		} else if (selector == "male") {
+			usersMale = usersMale.filter(hasDifferentEmail);
+			displayUsers(usersMale);
+		} else  {
+			displayUsers(usersAll);
+		}
+
+	 }
+
+	
+ 
+	//var usr = selectOptionGender(usersAll); 
+	//console.log(usr);
+	//displayUsers(usersAll);
+	//return usersAll; 
  }
  
   
@@ -121,12 +146,13 @@ function getAllData(users) {
 	usersFemale =[];
     usersMale = [] ;
 	usersAll.forEach(addToMapByGender); 
-	
+
+
 	function addToMapByGender(user) {
 		if (user.gender === "male") {
 			usersMale.push(user); 
 		} else   {
-			usersFemale.push(user); 
+		    usersFemale.push(user); 
 		} 
 	} 
 	 
@@ -146,20 +172,18 @@ function searchForUsers() {
 	if (inputTxt !== undefined && inputTxt!=="") {
 		findedUsers = arryToSearch.filter(isNameLikeInSearch); 
 		isActiveSearch = true; 
-		console.log(isActiveSearch);
-		function isNameLikeInSearch(user) {
+ 		function isNameLikeInSearch(user) {
 			if ((user.name.first.indexOf(inputTxt) > -1 ) || (user.name.last.indexOf(inputTxt) > -1 )){
 				return true; 
 			} 
 		}
 		displayUsers(findedUsers);
 		
-		return findedUsers; 
 	} else {
 		isActiveSearch = false; 
 		console.log(isActiveSearch);
+		debugger; 
 		displayUsers(arryToSearch);
-		return arryToSearch;
 	}
 } 
 
@@ -168,14 +192,16 @@ function displayUsers(users) {
 	let  boxTemplateHtml = '';
 	let  modalHtml = '' ; 
 
-
-	if (users.length >=1) {
-		boxTemplateHtml = Mustache.to_html(boxTemplateId, users);
-		$(".bodyWrapper").html(boxTemplateHtml); 
-		 
-	} else {
-		$(".bodyWrapper").html("Sorry, there is no user "); 
+	if (users !== '' || users !== undefined) {
+		if (users.length >=1) {
+			boxTemplateHtml = Mustache.to_html(boxTemplateId, users);
+			$(".bodyWrapper").html(boxTemplateHtml); 
+			 
+		} else {
+			$(".bodyWrapper").html("Sorry, there is no user "); 
+		}
 	}
+	
 }
 
 function loadFavList(favUsers) {
@@ -229,21 +255,6 @@ function openChart() {
     }
 });
 }
-
- // Initialize and add the map
-function initMap() {
-	debugger; 
-  // The location of Uluru
-  var uluru = {lat: -25.344, lng: 131.036};
-  // The map, centered at Uluru
-  var map = new google.maps.Map(
-      document.getElementById('myMap'), {zoom: 4, center: uluru});
-  // The marker, positioned at Uluru
-  var marker = new google.maps.Marker({position: uluru, map: map});
-}
- 
-
- 	
 	
 	return{
 		toggleFavContainer: toggleFavContainer, 
@@ -255,7 +266,7 @@ function initMap() {
 		loadMoreData : loadMoreData, 
 		openChart : openChart, 
 		deleteBox : deleteBox, 
-		initMap: initMap
+		//initMap: initMap
 	}
 })();
  
